@@ -1,16 +1,65 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://meyerweb.com/eric/tools/css/reset/reset.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
-    <title>Document</title>
+    <title>Yuri Kissing Images</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+        }
+        img {
+            max-width: 90%;
+            max-height: 90%;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+    </style>
 </head>
-
 <body>
-    <p>test</p>
-</body>
+    <img src="" alt="Girls kissing" class="animate__animated animate__fadeIn">
+    <script>
+        // Use cors-anywhere proxy for testing
+        const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
+        const apiUrl = 'https://safebooru.org/index.php?page=dapi&s=post&q=index&tags=yuri+kiss+2girls&json=1&limit=200';
+        const fullUrl = proxyUrl + apiUrl;
 
+        const posts = [];
+
+        fetch(fullUrl)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                posts = data;
+                if (posts && posts.length > 0) {
+                    const randomIndex = Math.floor(Math.random() * posts.length);
+                    const imageUrl = `https://safebooru.org/images/${posts[randomIndex].directory}/${posts[randomIndex].image}`;
+                    document.querySelector("img").src = imageUrl;
+                } else {
+                    console.error("No posts found.");
+                    document.querySelector("img").alt = "No images available";
+                }
+            })
+            .catch(error => {
+                console.error("Error fetching data:", error);
+                document.querySelector("img").alt = "Failed to load image";
+            });
+
+        function changeImage(){
+            const randomIndex = Math.floor(Math.random() * posts.length);
+            const imageUrl = `https://safebooru.org/images/${posts[randomIndex].directory}/${posts[randomIndex].image}`;
+            document.querySelector("img").src = imageUrl;
+        }
+    </script>
+</body>
 </html>
