@@ -27,10 +27,10 @@
     <script>
         // Use cors-anywhere proxy for testing
         const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
-        const apiUrl = 'https://safebooru.org/index.php?page=dapi&s=post&q=index&tags=yuri+kiss+2girls&json=1&limit=200';
+        const apiUrl = 'https://safebooru.org/index.php?page=dapi&s=post&q=index&tags=yuri+kiss+2girls&json=1&limit=100';
         const fullUrl = proxyUrl + apiUrl;
 
-        const posts = [];
+        let posts = [];
 
         fetch(fullUrl)
             .then(response => {
