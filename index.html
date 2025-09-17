@@ -24,9 +24,13 @@
             justify-content: center;
             align-items: center;
             width: 100%;
-            height: 100%;
+            height: 90%;
             border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        #post_tags {
+            height: 10%;
+            overflow-y: auto;
         }
         img {
             height: 100%;
@@ -95,6 +99,7 @@
                 if (posts.length > 0) {
                     const imageUrl = `https://safebooru.org/images/${posts[0].directory}/${posts[0].image}`;
                     document.querySelector("img").src = imageUrl;
+                    console.log(posts[0]);
                     document.getElementById("post_tags").innerText = posts[0].tags;
                 } else {
                     console.error("No valid posts found.");
