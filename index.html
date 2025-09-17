@@ -1,149 +1,51 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://meyerweb.com/eric/tools/css/reset/reset.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <link rel="stylesheet" href="style.css">
     <title>Yuri Kissing Images</title>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Changa+One:ital@0;1&display=swap');
-        body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100dvh;
-            background-color: #f0f0f0;
-            font-family: 'Changa One';
-            padding: 30px;
-            box-sizing: border-box;
-        }
-        #program {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            width: 100%;
-            height: 90%;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-        #post_tags {
-            height: 10%;
-            overflow-y: auto;
-        }
-        img {
-            height: 100%;
-            border-radius: 10px;
-        }
-        form {
-            display: flex;
-            flex-direction: column;
-            gap: 5px;
-            width: 40%;
-        }
-        input, button {
-            padding: 10px;
-            font-size: 1em;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            font-family: 'Changa One';
-        }
-        button {
-            background-color: #4CAF50;
-            color: white;
-            cursor: pointer;
-        }
-        button:hover {
-            background-color: #45a049;
-        }
-    </style>
 </head>
+
 <body>
-    <form action="" id="setup">
+    <div id="settings">
+        <button id="settingsButton" onclick="toggleSettings()" title="Settings">
+        </button>
+        <div id="settingsContent" style="display: block;">
+            <form action="" id="setup">
+                <fieldset>
+                    <legend>select source</legend>
+                    <label><input type="radio" name="source" value="safeboru" checked /> safeboru</label>
+                    <label><input type="radio" name="source" value="rule34" /> rule34</label>
+                    <br>
+                    <label for="tags">Tags</label>
+                    <input type="text" name="tags" value="yuri kiss 2girls">
+                    <br>
+                    <label for="interval">Change Interval (seconds)</label>
+                    <input type="number" name="interval" value="10" min="1">
+                    <br>
+                    <button type="button" class="submit" onclick="start()">Start</button>
+
+                </fieldset>
+            </form>
+        </div>
+    </div>    
+    <!-- <form action="" id="setup">
         <label for="tags">Tags</label>
         <input type="text" name="tags">
         <label for="interval">Change Interval (seconds)</label>
         <input type="number" name="interval" value="10" min="1">
-        <button type="button" onclick="start()">Start</button>
-    </form>
+        <button type="button" class="submit" onclick="start()">Start</button>
+    </form> -->
     <div style="display: none;" id="program">
         <img src="" alt="Girls kissing" class="animate__animated animate__fadeIn">
         <div id="post_tags">
         </div>
     </div>
-    <script>
-        // Use cors-anywhere proxy for testing (users must request access at cors-anywhere.herokuapp.com)
-        const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
-        let baseApiUrl = 'https://safebooru.org/index.php?page=dapi&s=post&q=index&tags=yuri+kiss+2girls&json=1&limit=100';
-        let posts = [];
-
-        // Fetch 300 images across 3 pages (100 images per page)
-        async function fetchImages() {
-            try {
-                const pages = [0, 1, 2]; // Fetch pages 0, 1, 2 for up to 300 images
-                const fetchPromises = pages.map(page => 
-                    fetch(`${proxyUrl}${baseApiUrl}&pid=${page}`)
-                        .then(response => {
-                            if (!response.ok) {
-                                throw new Error(`Network response was not ok for page ${page}`);
-                            }
-                            return response.json();
-                        })
-                );
-
-                const results = await Promise.all(fetchPromises);
-                // Combine all posts into a single array
-                posts = results.flat().filter(post => post.directory && post.image); // Ensure valid posts
-                posts.sort(() => Math.random() - 0.5); // Shuffle posts
-                if (posts.length > 0) {
-                    const imageUrl = `https://safebooru.org/images/${posts[0].directory}/${posts[0].image}`;
-                    document.querySelector("img").src = imageUrl;
-                    console.log(posts[0]);
-                    document.getElementById("post_tags").innerText = posts[0].tags;
-                } else {
-                    console.error("No valid posts found.");
-                    document.querySelector("img").alt = "No images available";
-                }
-            } catch (error) {
-                console.error("Error fetching data:", error);
-                document.querySelector("img").alt = "Failed to load image";
-            }
-        }
-
-        let index = 0;
-        function changeImage() {
-            index = (index + 1) % posts.length;
-            if (posts.length > 0) {
-                const imageUrl = `https://safebooru.org/images/${posts[index].directory}/${posts[index].image}`;
-                document.querySelector("img").src = imageUrl;
-                document.getElementById("post_tags").innerText = posts[index].tags;
-            } else {
-                console.error("No posts available to display.");
-                document.querySelector("img").alt = "No images available";
-            }
-        }
-
-
-        function start(){
-            const form = document.getElementById('setup');
-            const program = document.getElementById('program');
-            const tags = form.elements['tags'].value;
-            const interval = parseInt(form.elements['interval'].value, 10) * 1000;
-            if (tags.trim() !== '') {
-                // Update the baseApiUrl with user-provided tags
-                baseApiUrl = `https://safebooru.org/index.php?page=dapi&s=post&q=index&tags=yuri+kiss+2girls+${encodeURIComponent(tags.split(' ').join('+'))}&json=1&limit=100`;
-            }
-
-            form.style.display = 'none';
-            program.style.display = 'block';
-
-            // Fetch images on page load
-            fetchImages();
-    
-            // Change image every 10 seconds
-            setInterval(changeImage, interval);
-        }
-    </script>
+    <script src="script.js"></script>
 </body>
+
 </html>
