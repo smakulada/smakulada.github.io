@@ -16,30 +16,24 @@
         </button>
         <div id="settingsContent" style="display: block;">
             <form action="" id="setup">
-                <fieldset>
-                    <legend>select source</legend>
+                <div class="settingGroup">
+                    <span>Image Source:</span>
                     <label><input type="radio" name="source" value="safeboru" checked /> safeboru</label>
                     <label><input type="radio" name="source" value="rule34" /> rule34</label>
-                    <br>
-                    <label for="tags">Tags</label>
+                </div>
+                <div class="settingGroup">
+                    <label for="tags">Tags:</label>
                     <input type="text" name="tags" value="yuri kiss 2girls">
-                    <br>
+                </div>
+                <div class="settingGroup">
                     <label for="interval">Change Interval (seconds)</label>
                     <input type="number" name="interval" value="10" min="1">
-                    <br>
-                    <button type="button" class="submit" onclick="start()">Start</button>
-
-                </fieldset>
+                </div>
+                <button type="button" class="submit" onclick="start()">Start</button>
             </form>
         </div>
     </div>    
-    <!-- <form action="" id="setup">
-        <label for="tags">Tags</label>
-        <input type="text" name="tags">
-        <label for="interval">Change Interval (seconds)</label>
-        <input type="number" name="interval" value="10" min="1">
-        <button type="button" class="submit" onclick="start()">Start</button>
-    </form> -->
+
     <div style="display: none;" id="program">
         <img src="" alt="Girls kissing" class="animate__animated animate__fadeIn">
         <div id="post_tags">

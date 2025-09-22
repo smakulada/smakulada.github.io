@@ -69,7 +69,7 @@ function start(){
         console.log("Updated API URL:", baseApiUrl);
     }
     // form.style.display = 'none';
-    program.style.display = 'block';
+    program.style.display = 'flex';
     // Fetch images on page load
     fetchImages();
     // Change image every 10 seconds
@@ -78,9 +78,5 @@ function start(){
 
 function toggleSettings() {
     const settingsContent = document.getElementById('settingsContent');
-    if (settingsContent.style.display === 'none' || settingsContent.style.display === '') {
-        settingsContent.style.display = 'block';
-    } else {
-        settingsContent.style.display = 'none';
-    }
+    settingsContent.classList.toggle('show');
 }
